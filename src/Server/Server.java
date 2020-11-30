@@ -37,6 +37,16 @@ public class Server {
             }
         }
     }
+    public void sendUni(ClientHandler from, String nickNameTo, String msg){
+        for (ClientHandler o: clients) {
+            if(o.getNickname().equals(nickNameTo)){
+                o.sendMsg("от " + from.getNickname() + ": " + msg);
+                from.sendMsg("для " + nickNameTo + " вы отправили " + msg);
+                return;
+            }
+        }
+        from.sendMsg("Клиент: " + nickNameTo + " не найден в данном чате");
+    }
 
     void broadCastMsg(ClientHandler sender, String msg) {
         String message = String.format("%s : %s", sender.getNickname(), msg);

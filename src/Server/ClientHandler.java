@@ -51,7 +51,14 @@ public class ClientHandler {
                             out.writeUTF("/end");
                             break;
                         }
-                        server.broadCastMsg(this, str);
+                        if(str.startsWith("@ ")){
+                            String[] tokens = str.split(" ", 3);
+                            server.sendUni(ClientHandler.this, tokens[1], tokens[2]);
+                        }else {
+                            server.broadCastMsg(this, str);
+                            System.out.println("Клиент: " + str);
+                        }
+                        //server.broadCastMsg(this, str);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
