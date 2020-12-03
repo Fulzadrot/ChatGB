@@ -21,6 +21,7 @@ public class ClientHandler {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
+
             new Thread(()-> {
                 try {
                     // цикл аутентификации
@@ -32,6 +33,7 @@ public class ClientHandler {
                             String newNick = server.getAuthService().getNicknameByLoginAndPassword(token[1], token[2]);
 
                             if (newNick != null){
+                                socket.setSoTimeout(5000);
                                 nickname = newNick;
                                 sendMsg("/authok " + nickname);
                                 server.subscribe(this);

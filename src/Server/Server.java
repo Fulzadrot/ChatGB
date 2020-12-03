@@ -22,6 +22,7 @@ public class Server {
             server = new ServerSocket(PORT);
             System.out.println("Сервер запущен");
 
+
             while (true) {
                 socket = server.accept();
                 System.out.println("Клиент подключился");
