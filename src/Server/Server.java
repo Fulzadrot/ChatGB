@@ -22,6 +22,7 @@ public class Server {
             server = new ServerSocket(PORT);
             System.out.println("Сервер запущен");
 
+
             while (true) {
                 socket = server.accept();
                 System.out.println("Клиент подключился");
@@ -36,6 +37,16 @@ public class Server {
                 e.printStackTrace();
             }
         }
+    }
+    public void sendUni(ClientHandler from, String nickNameTo, String msg){
+        for (ClientHandler o: clients) {
+            if(o.getNickname().equals(nickNameTo)){
+                o.sendMsg("от " + from.getNickname() + ": " + msg);
+                from.sendMsg("для " + nickNameTo + " вы отправили " + msg);
+                return;
+            }
+        }
+        from.sendMsg("Клиент: " + nickNameTo + " не найден в данном чате");
     }
 
     void broadCastMsg(ClientHandler sender, String msg) {

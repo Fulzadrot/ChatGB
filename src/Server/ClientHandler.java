@@ -21,6 +21,7 @@ public class ClientHandler {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
+
             new Thread(()-> {
                 try {
                     // цикл аутентификации
@@ -32,6 +33,7 @@ public class ClientHandler {
                             String newNick = server.getAuthService().getNicknameByLoginAndPassword(token[1], token[2]);
 
                             if (newNick != null){
+                                socket.setSoTimeout(5000);
                                 nickname = newNick;
                                 sendMsg("/authok " + nickname);
                                 server.subscribe(this);
@@ -51,7 +53,14 @@ public class ClientHandler {
                             out.writeUTF("/end");
                             break;
                         }
-                        server.broadCastMsg(this, str);
+                        if(str.startsWith("@ ")){
+                            String[] tokens = str.split(" ", 3);
+                            server.sendUni(ClientHandler.this, tokens[1], tokens[2]);
+                        }else {
+                            server.broadCastMsg(this, str);
+                            System.out.println("Клиент: " + str);
+                        }
+                        //server.broadCastMsg(this, str);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
