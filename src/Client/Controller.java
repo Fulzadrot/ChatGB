@@ -71,6 +71,7 @@ public class Controller implements Initializable {
                 public void run() {
                     try {
                         // цикл аутентификации
+                        socket.setSoTimeout(120000);
                         while (true) {
                             String str = in.readUTF();
 
